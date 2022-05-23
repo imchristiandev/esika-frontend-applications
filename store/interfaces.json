@@ -1,0 +1,6 @@
+{
+  "sku-slider": {
+    "component": "SkuSlider",
+    "allowed": "*"
+  }
+}
