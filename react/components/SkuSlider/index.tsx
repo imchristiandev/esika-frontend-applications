@@ -9,7 +9,11 @@ import { SkuSliderItem } from './SkuSliderItem'
 import { SKUItem, SKUItemImage } from './types/types'
 import styles from './styles.css'
 
-export const SkuSlider = ({ blockClass }:any) => {
+type SkuSlider = {
+  blockClass: string
+}
+
+export const SkuSlider = ({ blockClass }: SkuSlider) => {
   const {product} = useProduct();
   const skuSelector = generateBlockClass(styles.sku, blockClass);
   console.log("Product items", product.items)

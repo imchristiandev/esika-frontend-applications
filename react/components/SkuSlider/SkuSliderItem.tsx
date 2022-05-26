@@ -10,6 +10,10 @@ import styles from './styles.css'
 // Shelf context
 const { useProductSummary, useProductSummaryDispatch } = ProductSummaryContext
 
+type Item = {
+  itemId: string
+}
+
 export const SkuSliderItem = ({ image, blockClass, productVariation }: SKUSelector) => {
 
   //CSS Handle for item
@@ -33,7 +37,7 @@ export const SkuSliderItem = ({ image, blockClass, productVariation }: SKUSelect
     productSummary?.items &&
     (
       productSummary.items.find(
-        (item: any) => item.itemId === productVariation.itemId
+        (item: Item) => item.itemId === productVariation.itemId
       ) as ProductSummaryTypes.SKU
     )
 

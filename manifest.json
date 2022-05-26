@@ -11,6 +11,7 @@
     "store": "0.x"
   },
   "dependencies": {
+    "vtex.product-context": "0.x",
     "vtex.slider-layout": "0.x",
     "vtex.product-summary-context": "0.x"
   },
