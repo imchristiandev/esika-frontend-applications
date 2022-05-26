@@ -1,31 +1,62 @@
 import React from 'react'
 import { generateBlockClass } from '@vtex/css-handles'
-import { useProductDispatch, useProduct } from 'vtex.product-context'
+import { ProductSummaryContext } from 'vtex.product-summary-context'
+import type {ProductSummaryTypes} from 'vtex.product-summary-context'
 
 import { SKUSelector } from './types/types'
 
 import styles from './styles.css'
 
-export const SkuSliderItem = ({ image, blockClass, productVariation }: SKUSelector) => {
-  const skuSelectorItem = generateBlockClass(styles["sku__item"], blockClass)
-  const { selectedItem, product } = useProduct()
-  const dispatch = useProductDispatch()
+// Shelf context
+const { useProductSummary, useProductSummaryDispatch } = ProductSummaryContext
 
+export const SkuSliderItem = ({ image, blockClass, productVariation }: SKUSelector) => {
+
+  //CSS Handle for item
+  const skuSelectorItem = generateBlockClass(styles["sku__item"], blockClass)
+
+  const { product: productSummary } = useProductSummary()
+  const dispatch = useProductSummaryDispatch()
+
+  // Click event bubbling that stops the product page redirection.
   const stopBubblingUp: React.MouseEventHandler<HTMLDivElement> = (e) => {
     e.preventDefault()
     e.stopPropagation()
-    dispatch({
-      type: "SET_SELECTED_ITEM",
-      args: {
-        item: productVariation
-      }
-    })
-    console.log("Item Selected", selectedItem, product);
+  }
 
+  // Method that handles the click for the item.
+  const handleSkuSelected: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    stopBubblingUp(e)
+
+    // Construction of necessary data to dispatch the new selected SKU
+    const selectedItem =
+    productSummary?.items &&
+    (
+      productSummary.items.find(
+        (item: any) => item.itemId === productVariation.itemId
+      ) as ProductSummaryTypes.SKU
+    )
+
+    const sku = {
+      ...selectedItem,
+      image: selectedItem.images[0]
+    }
+
+    const newProduct = {
+      ...productSummary,
+      selectedItem,
+      sku,
+    }
+
+    // Shelf context dispatch
+    dispatch({
+      type: 'SET_PRODUCT',
+      args: { product: newProduct },
+    })
   }
 
   return (
-    <div onClick={stopBubblingUp}>
+    <div onClick={handleSkuSelected}>
       <img src={image} className={skuSelectorItem}/>
     </div>
   )
