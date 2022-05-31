@@ -2,5 +2,9 @@
   "sku-slider": {
     "component": "SkuSlider",
     "allowed": "*"
+  },
+  "testing-component": {
+    "component": "TestingComponent",
+    "allowed": "*"
   }
 }
