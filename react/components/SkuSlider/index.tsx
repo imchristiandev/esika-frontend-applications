@@ -1,8 +1,7 @@
 import React from 'react'
-import { useProduct } from 'vtex.product-context'
+import { ProductSummaryContext } from 'vtex.product-summary-context'
 import { generateBlockClass } from '@vtex/css-handles'
 import { filterByTag } from './utils/utils'
-import { SliderLayout } from 'vtex.slider-layout'
 
 import { SkuSliderItem } from './SkuSliderItem'
 
@@ -13,8 +12,10 @@ type SkuSlider = {
   blockClass: string
 }
 
+const { useProductSummary } = ProductSummaryContext
+
 export const SkuSlider = ({ blockClass }: SkuSlider) => {
-  const {product} = useProduct();
+  const { product } = useProductSummary()
   const skuSelector = generateBlockClass(styles.sku, blockClass);
   console.log("Product items", product.items)
   const skuSelectorList = product?.items.map((item:SKUItem) => {
@@ -33,17 +34,8 @@ export const SkuSlider = ({ blockClass }: SkuSlider) => {
 
   return (skuSelectorList.length > 0) ?
     <div className={skuSelector}>
-      <SliderLayout
-        itemsPerPage={{
-          desktop: 4,
-          phone: 3,
-        }}
-        showPaginationDots="never"
-        arrowSize={15}
-        showNavigationArrows="always"
-      >
-        {skuSelectorList}
-      </SliderLayout>
+      {/* We need an slider that envolves the sku selector list*/}
+      {skuSelectorList}
     </div>:
     null
 }
